@@ -7,5 +7,6 @@ public class Game {
         Player black = new Player();
         
         Graphics.createAndShowGUI();
+        // ChessBoardWithColumnsAndRows.create();
     }
 }
