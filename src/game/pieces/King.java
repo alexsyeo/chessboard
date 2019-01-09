@@ -3,12 +3,12 @@ package game.pieces;
 import game.Board;
 
 public class King extends Piece {
-    public King(int row, int column, Board board) {
-        super(row, column, board);
+    public King(Position position, Board board) {
+        super(position, board);
     }
 
-    public King(int row, int column, boolean isWhite, Board board) {
-        super(row, column, isWhite, board);
+    public King(Position position, boolean isWhite, Board board) {
+        super(position, isWhite, board);
     }
 
     @Override

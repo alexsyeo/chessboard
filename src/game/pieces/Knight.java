@@ -6,12 +6,12 @@ import java.util.List;
 import game.Board;
 
 public class Knight extends Piece {
-    public Knight(int row, int column, Board board) {
-        super(row, column, board);
+    public Knight(Position position, Board board) {
+        super(position, board);
     }
 
-    public Knight(int row, int column, boolean isWhite, Board board) {
-        super(row, column, isWhite, board);
+    public Knight(Position position, boolean isWhite, Board board) {
+        super(position, board);
     }
 
 

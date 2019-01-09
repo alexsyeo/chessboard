@@ -4,12 +4,12 @@ import game.Board;
 
 public class Bishop extends Piece {
 
-    public Bishop(int row, int column, Board board) {
-        super(row, column, board);
+    public Bishop(Position position, Board board) {
+        super(position, board);
     }
 
-    public Bishop(int row, int column, boolean isWhite, Board board) {
-        super(row, column, isWhite, board);
+    public Bishop(Position position, boolean isWhite, Board board) {
+        super(position, isWhite, board);
     }
 
     @Override
