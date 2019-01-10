@@ -15,15 +15,16 @@ public class Position {
         EXAMPLE: A KNIGHT ON B1 HAS POSITION VALUE OF (0, 1);
     */
     public String toString() {
-        switch(row) {
-            case 0: return 'A' + Integer.toString(column - 1);
-            case 1: return 'B' + Integer.toString(column - 1);
-            case 2: return 'C' + Integer.toString(column - 1);
-            case 3: return 'D' + Integer.toString(column - 1);
-            case 4: return 'E' + Integer.toString(column - 1);
-            case 5: return 'F' + Integer.toString(column - 1);
-            case 6: return 'G' + Integer.toString(column - 1);
-            case 7: return 'H' + Integer.toString(column - 1);
+        String rowNumber = Integer.toString(8 - row);
+        switch(column) {
+            case 0: return 'A' + rowNumber;
+            case 1: return 'B' + rowNumber;
+            case 2: return 'C' + rowNumber;
+            case 3: return 'D' + rowNumber;
+            case 4: return 'E' + rowNumber;
+            case 5: return 'F' + rowNumber;
+            case 6: return 'G' + rowNumber;
+            case 7: return 'H' + rowNumber;
             default: return "Invalid position.";
         }
     }

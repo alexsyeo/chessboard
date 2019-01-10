@@ -19,39 +19,36 @@ public class Pawn extends Piece {
         return true;
     }
 
-    @Override
-    public boolean isPinned() {
-        boolean isPinned = false;
+    // @Override
+    // public boolean isPinned() {
+    //     boolean isPinned = false;
 
-        if (isWhite) {
-            if (board.getBlackBishopCount() == )
-        }
 
-        return isPinned;
-    }
+    //     return isPinned;
+    // }
 
     @Override
     public List<Position> legalMoves() {
         List<Position> legalMoves = new ArrayList<>();
-        if (!isPinned()) {
-            if (isWhite) {
-                if (!board.isOccupied(row - 1, column)) {
-                    legalMoves.add(new Position(row - 1, column));
-    
-                    if (!hasMoved && !board.isOccupied(row - 2, column)) {
-                        legalMoves.add(new Position(row - 2, column));
-                    }
-                }
-            } else {
-                if (!board.isOccupied(row + 1, column)) {
-                    legalMoves.add(new Position(row + 1, column));
-    
-                    if (!hasMoved && !board.isOccupied(row + 2, column)) {
-                        legalMoves.add(new Position(row + 2, column));
-                    }
-                }
-            }
-        }
+//        if (!isPinned()) {
+//            if (isWhite) {
+//                if (!board.isOccupied(row - 1, column)) {
+//                    legalMoves.add(new Position(row - 1, column));
+//
+//                    if (!hasMoved && !board.isOccupied(row - 2, column)) {
+//                        legalMoves.add(new Position(row - 2, column));
+//                    }
+//                }
+//            } else {
+//                if (!board.isOccupied(row + 1, column)) {
+//                    legalMoves.add(new Position(row + 1, column));
+//
+//                    if (!hasMoved && !board.isOccupied(row + 2, column)) {
+//                        legalMoves.add(new Position(row + 2, column));
+//                    }
+//                }
+//            }
+//        }
 
         return legalMoves;
     }

@@ -3,7 +3,6 @@ package game.pieces;
 import java.util.List;
 
 import game.Board;
-import game.Position;
 
 public abstract class Piece {
     protected boolean isWhite;
@@ -90,11 +89,11 @@ public abstract class Piece {
         return position;
     }
 
-    // DIFFERENT TYPES OF PINS:
-    // EXAMPLE: BISHOP PINNED TO KING BY BISHOP VS ROOK.
+    // // DIFFERENT TYPES OF PINS:
+    // // EXAMPLE: BISHOP PINNED TO KING BY BISHOP VS ROOK.
 
-    /*
-        RETURNS WHETHER OR NOT THE PIECE IS PINNED TO THE KING.
-    */
-    public abstract boolean isPinned();
+    // /*
+    //     RETURNS WHETHER OR NOT THE PIECE IS PINNED TO THE KING.
+    // */
+    // public abstract boolean isPinned();
 }

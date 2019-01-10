@@ -11,6 +11,7 @@ import javax.swing.border.*;
     TOOK COMPONENTS FROM https://stackoverflow.com/questions/21077322/create-a-chess-board-with-jpanel
 */
 
+@SuppressWarnings("serial")
 public class Graphics extends JFrame {
     private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final JButton[][] chessBoardSquares = new JButton[8][8];
