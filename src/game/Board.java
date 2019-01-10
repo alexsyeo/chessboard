@@ -367,6 +367,8 @@ public class Board {
                 } else {
                     if (piece.isRook() || piece.isQueen()) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -382,6 +384,8 @@ public class Board {
                 } else {
                     if (piece.isRook() || piece.isQueen()) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -397,6 +401,8 @@ public class Board {
                 } else {
                     if (piece.isRook() || piece.isQueen()) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -412,6 +418,8 @@ public class Board {
                 } else {
                     if (piece.isRook() || piece.isQueen()) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -475,6 +483,8 @@ public class Board {
                 } else {
                     if (piece.isBishop() || piece.isQueen()) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -495,6 +505,8 @@ public class Board {
                 } else {
                     if (piece.isBishop() || piece.isQueen()) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -515,6 +527,8 @@ public class Board {
                 } else {
                     if (piece.isBishop() || piece.isQueen()) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -535,6 +549,8 @@ public class Board {
                 } else {
                     if (piece.isBishop() || piece.isQueen()) {
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
