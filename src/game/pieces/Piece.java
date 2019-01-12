@@ -9,6 +9,7 @@ public abstract class Piece {
     protected boolean hasMoved;
     protected Position position;
     protected Board board;
+    protected static final int BOARD_LENGTH = 8;
 
     public Piece() {
         
@@ -63,17 +64,7 @@ public abstract class Piece {
     */
     public void move(Position position) {
         this.position = position;
-        board.move(this, position.row, position.column);
         hasMoved = true;
-    }
-
-    /*
-        PREVIEW MOVING THE PIECE TO THE SPECIFIED POSITION.
-        THIS IS USEFUL FOR DETECTING CHECKS AND PINS.
-    */
-    public void previewMove(Position position) {
-        this.position = position;
-        board.move(this, position.row, position.column);
     }
 
     /*
@@ -85,15 +76,42 @@ public abstract class Piece {
         return hasMoved;
     }
 
+    public void updateHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
+
     public Position getPosition() {
         return position;
     }
 
-    // // DIFFERENT TYPES OF PINS:
-    // // EXAMPLE: BISHOP PINNED TO KING BY BISHOP VS ROOK.
+    // A helper method for checking if a piece is pinned and adding the square to the list of legal moves if applicable.
+    // This method applies for rooks, bishops, and queens.
+    protected boolean checkForPinAndAddSquare(List<Position> legalMoves, Position potentialSquare, int i) {
+        // For the first square, we must check if the piece is pinned.
+        if (i == 1) {
+            board.move(this, potentialSquare);
+            // If the piece is pinned, then we do not have to go down the rest of the row/column/diagonal.
+            if (isWhite) {
+                if (board.whiteKingInCheck()) {
+                    board.revertPreviousMove();
+                    return true;
+                } else {
+                    board.revertPreviousMove();
+                    legalMoves.add(potentialSquare);
+                }
+            } else {
+                if (board.blackKingInCheck()) {
+                    board.revertPreviousMove();
+                    return true;
+                } else {
+                    board.revertPreviousMove();
+                    legalMoves.add(potentialSquare);
+                }
+            }
 
-    // /*
-    //     RETURNS WHETHER OR NOT THE PIECE IS PINNED TO THE KING.
-    // */
-    // public abstract boolean isPinned();
+        } else {
+            legalMoves.add(potentialSquare);
+        }
+        return false;
+    }
 }

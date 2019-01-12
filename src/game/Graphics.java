@@ -1,9 +1,9 @@
 package game;
 
+import game.pieces.*;
+
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -16,10 +16,12 @@ public class Graphics extends JFrame {
     private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final JButton[][] chessBoardSquares = new JButton[8][8];
     private JPanel boardPanel;
+    private Board board;
 
 
-    public Graphics(String name) {
+    public Graphics(String name, Board board) {
         super(name);
+        this.board = board;
         setResizable(false);
     }
 
@@ -40,65 +42,54 @@ public class Graphics extends JFrame {
             for (int column = 0; column < chessBoardSquares.length; column++) {
                 JButton button = new JButton();
                 button.setMargin(buttonMargin);
-                
+                Image img = null;
                 ImageIcon icon;
-                if (row == 1) {
-                    Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_pawn.png").getImage();
-                    Image newimg = img.getScaledInstance(50, 60, Image.SCALE_SMOOTH);
-                    icon = new ImageIcon(newimg);
-                } else if (row == 6) {
-                    Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_pawn.png").getImage();
-                    Image newimg = img.getScaledInstance(70, 60, Image.SCALE_SMOOTH);
-                    icon = new ImageIcon(newimg);
-                } else if (row == 0) {
-                    if (column == 0 || column == 7) {
-                        Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_rook.png").getImage();
-                        Image newimg = img.getScaledInstance(70, 60, Image.SCALE_SMOOTH);
-                        icon = new ImageIcon(newimg);
-                    } else if (column == 1 || column == 6) {
-                        Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_knight.png").getImage();
-                        Image newimg = img.getScaledInstance(70, 60, Image.SCALE_SMOOTH);
-                        icon = new ImageIcon(newimg);
-                    } else if (column == 2 || column == 5) {
-                        Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_bishop.png").getImage();
-                        Image newimg = img.getScaledInstance(65, 60, Image.SCALE_SMOOTH);
-                        icon = new ImageIcon(newimg);
-                    } else if (column == 3) {
-                        Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_queen.png").getImage();
-                        Image newimg = img.getScaledInstance(70, 70, Image.SCALE_SMOOTH);
-                        icon = new ImageIcon(newimg);
-                    } else {
-                        Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_king.png").getImage();
-                        Image newimg = img.getScaledInstance(70, 60, Image.SCALE_SMOOTH);
-                        icon = new ImageIcon(newimg);
-                    }
-                } else if (row == 7) {
-                    if (column == 0 || column == 7) {
-                        Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_rook.png").getImage();
-                        Image newimg = img.getScaledInstance(70, 60, Image.SCALE_SMOOTH);
-                        icon = new ImageIcon(newimg);
-                    } else if (column == 1 || column == 6) {
-                        Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_knight.png").getImage();
-                        Image newimg = img.getScaledInstance(70, 60, Image.SCALE_SMOOTH);
-                        icon = new ImageIcon(newimg);
-                    } else if (column == 2 || column == 5) {
-                        Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_bishop.png").getImage();
-                        Image newimg = img.getScaledInstance(65, 60, Image.SCALE_SMOOTH);
-                        icon = new ImageIcon(newimg);
-                    } else if (column == 3) {
-                        Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_queen.png").getImage();
-                        Image newimg = img.getScaledInstance(70, 60, Image.SCALE_SMOOTH);
-                        icon = new ImageIcon(newimg);
-                    } else {
-                        Image img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_king.png").getImage();
-                        Image newimg = img.getScaledInstance(70, 60, Image.SCALE_SMOOTH);
-                        icon = new ImageIcon(newimg);
-                    }
-                } else {
+                Piece piece = board.getPiece(row, column);
+                if (piece == null) {
                     icon = new ImageIcon(
-                        new BufferedImage(buttonSideLength, buttonSideLength, BufferedImage.TYPE_INT_ARGB)
+                            new BufferedImage(buttonSideLength, buttonSideLength, BufferedImage.TYPE_INT_ARGB)
                     );
+                } else {
+                    if (piece.isPawn()) {
+                        if (piece.isWhite()) {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_pawn.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        } else {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_pawn.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        }
+                    } else if (piece.isKnight()) {
+                        if (piece.isWhite()) {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_knight.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        } else {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_knight.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        }
+                    } else if (piece.isBishop()) {
+                        if (piece.isWhite()) {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_bishop.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        } else {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_bishop.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        }
+                    } else if (piece.isRook()) {
+                        if (piece.isWhite()) {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_rook.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        } else {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_rook.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        }
+                    } else if (piece.isQueen()) {
+                        if (piece.isWhite()) {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_queen.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        } else {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_queen.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        }
+                    } else if (piece.isKing()) {
+                        if (piece.isWhite()) {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/white_king.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        } else {
+                            img = new ImageIcon("/Users/alex/Desktop/chess/src/img/black_king.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH);
+                        }
+                    }
+                    icon = new ImageIcon(img);
                 }
+
                 button.setIcon(icon);
                 
                 // LIGHT YELLOW
@@ -119,8 +110,8 @@ public class Graphics extends JFrame {
         pane.add(masterPanel, BorderLayout.NORTH);
     }
 
-    public static void createAndShowGUI() {
-        Graphics graphics = new Graphics("Chess");
+    public static void createAndShowGUI(Board board) {
+        Graphics graphics = new Graphics("Chess", board);
 
         graphics.setLocation(screenSize.width / 4, (screenSize.height - (screenSize.width / 2)) / 2);
         graphics.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

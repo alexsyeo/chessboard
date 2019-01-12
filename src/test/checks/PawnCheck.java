@@ -33,4 +33,40 @@ public class PawnCheck {
         board.insertPiece(new Pawn(new Position(6, 6), true, board));
         assertTrue(board.blackKingInCheck());
     }
+
+
+
+
+        ///////////////////////////////////////////
+       //      THE BELOW TESTS ARE THE          //
+      //       SAME AS THE ABOVE EXCEPT        //
+     //        THE COLORS ARE REVERSED.       //
+    ///////////////////////////////////////////
+
+
+
+
+    /*
+        ENSURES THAT A BLACK PAWN NORTHWEST OF THE WHITE KING IS A CHECK.
+    */
+    @Test
+    public void testCheckNorthwest() {
+        Board board = new Board();
+        board.insertPiece(new King(new Position(5, 5), true, board));
+        board.insertPiece(new King(new Position(0, 0), board));
+        board.insertPiece(new Pawn(new Position(4, 4), board));
+        assertTrue(board.whiteKingInCheck());
+    }
+
+    /*
+        ENSURES THAT A BLACK PAWN NORTHEAST OF THE WHITE KING IS A CHECK.
+    */
+    @Test
+    public void testCheckNortheast() {
+        Board board = new Board();
+        board.insertPiece(new King(new Position(5, 5), true, board));
+        board.insertPiece(new King(new Position(0, 0), board));
+        board.insertPiece(new Pawn(new Position(4, 6), board));
+        assertTrue(board.whiteKingInCheck());
+    }
 }
