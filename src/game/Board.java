@@ -111,8 +111,20 @@ public class Board {
         // now be removed.
         Piece removedPiece = removePiece(target.row, target.column);
 
-        // The target square should now be occupied by the piece.
-        chessBoard[target.row][target.column] = piece;
+        // Handle pawn promotion to queen (currently auto-promote).
+        if (piece.isPawn()) {
+            if (target.row == 0) {
+                insertPiece(new Queen(target, true, this));
+            } else if (target.row == 7) {
+                insertPiece(new Queen(target, this));
+            } else {
+                // The target square should now be occupied by the piece.
+                chessBoard[target.row][target.column] = piece;
+            }
+        } else {
+            // The target square should now be occupied by the piece.
+            chessBoard[target.row][target.column] = piece;
+        }
 
         // Handle castling.
         if (piece.isKing()) {

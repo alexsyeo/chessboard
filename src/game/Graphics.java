@@ -87,12 +87,13 @@ public class Graphics extends JFrame {
                                 setIcon(pressedPiece, button);
                                 board.move(pressedPiece, buttonPosition);
 
-                                // Update icon above/below pawn to account for en passant.
+                                // Update icon above/below pawn to account for en passant. Also account for pawn promotion.
                                 if (pressedPiece.isPawn()) {
+                                    setIcon(board.getPiece(buttonPosition.row, buttonPosition.column), chessBoardSquares[buttonPosition.row][buttonPosition.column]);
                                     if (pressedPiece.isWhite()) {
-                                        setIcon(null, chessBoardSquares[buttonPosition.row + 1][buttonPosition.column]);
+                                        setIcon(board.getPiece(buttonPosition.row + 1, buttonPosition.column), chessBoardSquares[buttonPosition.row + 1][buttonPosition.column]);
                                     } else {
-                                        setIcon(null, chessBoardSquares[buttonPosition.row - 1][buttonPosition.column]);
+                                        setIcon(board.getPiece(buttonPosition.row - 1, buttonPosition.column), chessBoardSquares[buttonPosition.row - 1][buttonPosition.column]);
                                     }
                                 }
 
