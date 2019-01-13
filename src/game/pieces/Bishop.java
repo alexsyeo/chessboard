@@ -32,35 +32,24 @@ public class Bishop extends Piece {
 
         // Move northwest.
         for (int i = 1; i < BOARD_LENGTH; i++) {
-            if (board.inBoard(row - i, column - i)) {
-                if (board.isOccupied(row - i, column - i) && board.getPiece(row - i, column - i).isWhite() == isWhite) {
+            if (board.inBoard(row - i, column - i) && !(board.isOccupied(row - i, column - i) && board.getPiece(row - i, column - i).isWhite() == isWhite)) {
+                Position potentialSquare = new Position(row - i, column - i);
+                checkIfLegal(legalMoves, potentialSquare);
+                if (board.getPiece(row - i, column - i) != null) {
                     break;
-                } else {
-                    Position potentialSquare = new Position(row - i, column - i);
-                    if (checkForPinAndAddSquare(legalMoves, potentialSquare, i)) {
-                        break;
-                    } else {
-                        if (board.getPiece(row - i, column - i) != null) {
-                            break;
-                        }
-                    }
                 }
             } else {
                 break;
             }
         }
 
-
         // Move northeast.
         for (int i = 1; i < BOARD_LENGTH; i++) {
             if (board.inBoard(row - i, column + i) && !(board.isOccupied(row - i, column + i) && board.getPiece(row - i, column + i).isWhite() == isWhite)) {
                 Position potentialSquare = new Position(row - i, column + i);
-                if (checkForPinAndAddSquare(legalMoves, potentialSquare, i)) {
+                checkIfLegal(legalMoves, potentialSquare);
+                if (board.getPiece(row - i, column + i) != null) {
                     break;
-                } else {
-                    if (board.getPiece(row - i, column + i) != null) {
-                        break;
-                    }
                 }
             } else {
                 break;
@@ -71,12 +60,9 @@ public class Bishop extends Piece {
         for (int i = 1; i < BOARD_LENGTH; i++) {
             if (board.inBoard(row + i, column - i) && !(board.isOccupied(row + i, column - i) && board.getPiece(row + i, column - i).isWhite() == isWhite)) {
                 Position potentialSquare = new Position(row + i, column - i);
-                if (checkForPinAndAddSquare(legalMoves, potentialSquare, i)) {
+                checkIfLegal(legalMoves, potentialSquare);
+                if (board.getPiece(row + i, column - i) != null) {
                     break;
-                } else {
-                    if (board.getPiece(row + i, column - i) != null) {
-                        break;
-                    }
                 }
             } else {
                 break;
@@ -87,12 +73,9 @@ public class Bishop extends Piece {
         for (int i = 1; i < BOARD_LENGTH; i++) {
             if (board.inBoard(row + i, column + i) && !(board.isOccupied(row + i, column + i) && board.getPiece(row + i, column + i).isWhite() == isWhite)) {
                 Position potentialSquare = new Position(row + i, column + i);
-                if (checkForPinAndAddSquare(legalMoves, potentialSquare, i)) {
+                checkIfLegal(legalMoves, potentialSquare);
+                if (board.getPiece(row + i, column + i) != null) {
                     break;
-                } else {
-                    if (board.getPiece(row + i, column + i) != null) {
-                        break;
-                    }
                 }
             } else {
                 break;

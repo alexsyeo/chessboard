@@ -1,7 +1,6 @@
 package game.pieces;
 
 import game.Board;
-import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,35 +31,11 @@ public class Rook extends Piece {
 
         // Move north.
         for (int i = 1; i < BOARD_LENGTH; i++) {
-            if (board.inBoard(row - i, column)) {
-                if (board.isOccupied(row - i, column) && board.getPiece(row - i, column).isWhite() == isWhite) {
+            if (board.inBoard(row - i, column) && !(board.isOccupied(row - i, column) && board.getPiece(row - i, column).isWhite() == isWhite)) {
+                Position potentialSquare = new Position(row - i, column);
+                checkIfLegal(legalMoves, potentialSquare);
+                if (board.getPiece(row - i, column) != null) {
                     break;
-                } else {
-                    Position potentialSquare = new Position(row - i, column);
-                    if (checkForPinAndAddSquare(legalMoves, potentialSquare, i)) {
-                        break;
-                    } else {
-                        if (board.getPiece(row - i, column) != null) {
-                            break;
-                        }
-                    }
-                }
-            } else {
-                break;
-            }
-        }
-
-
-        // Move south.
-        for (int i = 1; i < BOARD_LENGTH; i++) {
-            if (board.inBoard(row + i, column) && !(board.isOccupied(row + i, column) && board.getPiece(row + i, column).isWhite() == isWhite)) {
-                Position potentialSquare = new Position(row + i, column);
-                if (checkForPinAndAddSquare(legalMoves, potentialSquare, i)) {
-                    break;
-                } else {
-                    if (board.getPiece(row + i, column) != null) {
-                        break;
-                    }
                 }
             } else {
                 break;
@@ -71,12 +46,22 @@ public class Rook extends Piece {
         for (int i = 1; i < BOARD_LENGTH; i++) {
             if (board.inBoard(row, column + i) && !(board.isOccupied(row, column + i) && board.getPiece(row, column + i).isWhite() == isWhite)) {
                 Position potentialSquare = new Position(row, column + i);
-                if (checkForPinAndAddSquare(legalMoves, potentialSquare, i)) {
+                checkIfLegal(legalMoves, potentialSquare);
+                if (board.getPiece(row, column + i) != null) {
                     break;
-                } else {
-                    if (board.getPiece(row, column + i) != null) {
-                        break;
-                    }
+                }
+            } else {
+                break;
+            }
+        }
+
+        // Move south.
+        for (int i = 1; i < BOARD_LENGTH; i++) {
+            if (board.inBoard(row + i, column) && !(board.isOccupied(row + i, column) && board.getPiece(row + i, column).isWhite() == isWhite)) {
+                Position potentialSquare = new Position(row + i, column);
+                checkIfLegal(legalMoves, potentialSquare);
+                if (board.getPiece(row + i, column) != null) {
+                    break;
                 }
             } else {
                 break;
@@ -87,12 +72,9 @@ public class Rook extends Piece {
         for (int i = 1; i < BOARD_LENGTH; i++) {
             if (board.inBoard(row, column - i) && !(board.isOccupied(row, column - i) && board.getPiece(row, column - i).isWhite() == isWhite)) {
                 Position potentialSquare = new Position(row, column - i);
-                if (checkForPinAndAddSquare(legalMoves, potentialSquare, i)) {
+                checkIfLegal(legalMoves, potentialSquare);
+                if (board.getPiece(row, column - i) != null) {
                     break;
-                } else {
-                    if (board.getPiece(row, column - i) != null) {
-                        break;
-                    }
                 }
             } else {
                 break;

@@ -94,12 +94,11 @@ public class Board {
     */
     public void move(Piece piece, Position target) {
         Position sourcePosition = piece.getPosition();
-        Position targetPosition = target;
         Piece previousSourcePiece = piece;
         Piece previousDestinationPiece = getPiece(target.row, target.column);
         boolean previousHasMoved = piece.hasMoved();
 
-        Move newMove = new Move(previousSourcePiece, previousDestinationPiece, sourcePosition, targetPosition, previousHasMoved);
+        Move newMove = new Move(previousSourcePiece, previousDestinationPiece, sourcePosition, target, previousHasMoved);
         moves.add(newMove);
 
         // Update the position variable of the piece.
@@ -110,10 +109,36 @@ public class Board {
 
         // The piece that used to occupy the target square (if any) should
         // now be removed.
-        removePiece(target.row, target.column);
+        Piece removedPiece = removePiece(target.row, target.column);
 
         // The target square should now be occupied by the piece.
         chessBoard[target.row][target.column] = piece;
+
+        // Handle castling.
+        if (piece.isKing()) {
+            if (target.column == sourcePosition.column + 2) {
+                // King-side castle.
+                Piece rook = getPiece(target.row, target.column + 1);
+                rook.move(new Position(target.row, target.column - 1));
+                chessBoard[target.row][target.column + 1] = null;
+                chessBoard[target.row][target.column - 1] = rook;
+            } else if (target.column == sourcePosition.column - 2) {
+                // Queen-side castle.
+                Piece rook = getPiece(target.row, target.column - 2);
+                rook.move(new Position(target.row, target.column + 1));
+                chessBoard[target.row][target.column - 2] = null;
+                chessBoard[target.row][target.column + 1] = rook;
+            }
+        }
+
+        // Handle en passant.
+        if (piece.isPawn() && removedPiece == null && sourcePosition.column != target.column) {
+            if (piece.isWhite()) {
+                removePiece(target.row + 1, target.column);
+            } else {
+                removePiece(target.row - 1, target.column);
+            }
+        }
     }
 
     /*
@@ -146,6 +171,14 @@ public class Board {
     */
     public Piece getPiece(int row, int column) {
         return chessBoard[row][column];
+    }
+
+    /*
+        MOVE THE PIECE WITHOUT CHANGING ANY OTHER STATE.
+    */
+    public void sneakyMove(Position source, Position destination) {
+        chessBoard[destination.row][destination.column] = chessBoard[source.row][source.column];
+        chessBoard[source.row][source.column] = null;
     }
 
     /*

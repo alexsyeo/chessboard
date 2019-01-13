@@ -84,34 +84,13 @@ public abstract class Piece {
         return position;
     }
 
-    // A helper method for checking if a piece is pinned and adding the square to the list of legal moves if applicable.
+    // A helper method for checking if a move is legal adding the square to the list of legal moves if applicable.
     // This method applies for rooks, bishops, and queens.
-    protected boolean checkForPinAndAddSquare(List<Position> legalMoves, Position potentialSquare, int i) {
-        // For the first square, we must check if the piece is pinned.
-        if (i == 1) {
-            board.move(this, potentialSquare);
-            // If the piece is pinned, then we do not have to go down the rest of the row/column/diagonal.
-            if (isWhite) {
-                if (board.whiteKingInCheck()) {
-                    board.revertPreviousMove();
-                    return true;
-                } else {
-                    board.revertPreviousMove();
-                    legalMoves.add(potentialSquare);
-                }
-            } else {
-                if (board.blackKingInCheck()) {
-                    board.revertPreviousMove();
-                    return true;
-                } else {
-                    board.revertPreviousMove();
-                    legalMoves.add(potentialSquare);
-                }
-            }
-
-        } else {
+    protected void checkIfLegal(List<Position> legalMoves, Position potentialSquare) {
+        board.move(this, potentialSquare);
+        if ((isWhite && !board.whiteKingInCheck()) || (!isWhite && !board.blackKingInCheck())) {
             legalMoves.add(potentialSquare);
         }
-        return false;
+        board.revertPreviousMove();
     }
 }

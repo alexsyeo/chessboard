@@ -51,22 +51,27 @@ public class King extends Piece {
                         board.move(this, rightOne);
                         if ((isWhite && !board.whiteKingInCheck()) || (!isWhite && !board.blackKingInCheck())) {
                             board.revertPreviousMove();
-                            Position rightTwo = new Position(row, column + 2);
-                            board.move(this, rightTwo);
-                            if ((isWhite && !board.whiteKingInCheck()) || (!isWhite && !board.blackKingInCheck())) {
-                                legalMoves.add(rightTwo);
+                            if (!board.isOccupied(row, column + 2)) {
+                                Position rightTwo = new Position(row, column + 2);
+                                board.move(this, rightTwo);
+                                if ((isWhite && !board.whiteKingInCheck()) || (!isWhite && !board.blackKingInCheck())) {
+                                    legalMoves.add(rightTwo);
+                                }
                             }
-                            board.revertPreviousMove();
-                        } else {
-                            board.revertPreviousMove();
+                            // Put rook back to original position.
+                            Position originalPosition = new Position(row, column + 3);
+                            potentialRook.move(originalPosition);
+                            potentialRook.updateHasMoved(false);
+                            board.sneakyMove(rightOne, originalPosition);
                         }
+                        board.revertPreviousMove();
                     }
                 }
             }
         }
 
         // Castle queen-side.
-        if (!hasMoved) {
+        if (!hasMoved && !((isWhite && board.whiteKingInCheck()) || (!isWhite && board.blackKingInCheck()))) {
             Piece potentialRook = board.getPiece(row, column - 4);
             if (potentialRook != null && potentialRook.isRook() && !potentialRook.hasMoved() && !board.isOccupied(row, column - 3)) {
                 if (potentialRook.isWhite() == isWhite) {
@@ -75,15 +80,20 @@ public class King extends Piece {
                         board.move(this, leftOne);
                         if ((isWhite && !board.whiteKingInCheck()) || (!isWhite && !board.blackKingInCheck())) {
                             board.revertPreviousMove();
-                            Position leftTwo = new Position(row, column - 2);
-                            board.move(this, leftTwo);
-                            if ((isWhite && !board.whiteKingInCheck()) || (!isWhite && !board.blackKingInCheck())) {
-                                legalMoves.add(leftTwo);
+                            if (!board.isOccupied(row, column - 2)) {
+                                Position leftTwo = new Position(row, column - 2);
+                                board.move(this, leftTwo);
+                                if ((isWhite && !board.whiteKingInCheck()) || (!isWhite && !board.blackKingInCheck())) {
+                                    legalMoves.add(leftTwo);
+                                }
                             }
-                            board.revertPreviousMove();
-                        } else {
-                            board.revertPreviousMove();
+                            // Put rook back to original position.
+                            Position originalPosition = new Position(row, column - 4);
+                            potentialRook.move(originalPosition);
+                            potentialRook.updateHasMoved(false);
+                            board.sneakyMove(leftOne, originalPosition);
                         }
+                        board.revertPreviousMove();
                     }
                 }
             }

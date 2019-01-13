@@ -32,6 +32,7 @@ public class KingMoves {
         Board board = new Board();
         board.insertPiece(new King(new Position(7, 7), true, board));
         board.insertPiece(new King(new Position(0, 0), board));
+        board.getPiece(7, 7).updateHasMoved(true);
         assertEquals(3, board.getPiece(7, 7).legalMoves().size());
 
         System.out.println("King Position: " + board.getPiece(7, 7).getPosition());

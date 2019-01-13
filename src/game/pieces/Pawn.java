@@ -40,7 +40,13 @@ public class Pawn extends Piece {
                     board.revertPreviousMove();
                     if (!hasMoved) {
                         Position moveTwo = new Position(row - 2, column);
-                        legalMoves.add(moveTwo);
+                        if (!board.isOccupied(moveTwo.row, moveTwo.column)) {
+                            board.move(this, moveTwo);
+                            if (!board.whiteKingInCheck()) {
+                                legalMoves.add(moveTwo);
+                            }
+                            board.revertPreviousMove();
+                        }
                     }
                 } else {
                     board.revertPreviousMove();
@@ -55,7 +61,13 @@ public class Pawn extends Piece {
                     board.revertPreviousMove();
                     if (!hasMoved) {
                         Position moveTwo = new Position(row + 2, column);
-                        legalMoves.add(moveTwo);
+                        if (!board.isOccupied(moveTwo.row, moveTwo.column)) {
+                            board.move(this, moveTwo);
+                            if (!board.blackKingInCheck()) {
+                                legalMoves.add(moveTwo);
+                            }
+                            board.revertPreviousMove();
+                        }
                     }
                 } else {
                     board.revertPreviousMove();

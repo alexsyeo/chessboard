@@ -28,4 +28,23 @@ public class Position {
             default: return "Invalid position.";
         }
     }
+
+    /*
+        OVERRIDING EQUALS METHOD SO THAT TWO POSITIONS ARE EQUAL IF THEY HAVE
+        THE SAME ROW AND COLUMN VALUES.
+    */
+    @Override
+    public boolean equals (Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Position)) {
+            return false;
+        }
+
+        Position position = (Position) o;
+
+        return position.row == row && position.column == column;
+    }
 }
