@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 /*
     TOOK COMPONENTS FROM https://stackoverflow.com/questions/21077322/create-a-chess-board-with-jpanel
+
+    TOOK PIECE DESIGNS FROM https://github.com/ornicar/lila/tree/master/public/piece
 */
 
 @SuppressWarnings("serial")
