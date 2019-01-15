@@ -98,9 +98,9 @@ public class Graphics extends JFrame {
                                         setIcon(board.getPiece(buttonPosition.row - 1, buttonPosition.column), chessBoardSquares[buttonPosition.row - 1][buttonPosition.column]);
                                     }
 
-                                    // Handle pawn promotion to queen (currently auto-promote).
+                                    // Handle pawn promotion to queen.
                                     if (buttonPosition.row == 0 || buttonPosition.row == 7) {
-                                        new PromoteMenu(buttonPosition, pressedPiece.isWhite(), button);
+                                        new PromoteMenu(buttonPosition, pressedPiece.isWhite(), button, null, board);
                                     }
                                 }
 
@@ -224,12 +224,12 @@ public class Graphics extends JFrame {
 
 
 
-    private class PromoteMenu implements ActionListener {
+    public static class PromoteMenu implements ActionListener {
         JFrame frame;
         JPanel popup;
         JButton knightButton, bishopButton, rookButton, queenButton;
 
-        PromoteMenu(Position position, boolean isWhite, JButton button) {
+        PromoteMenu(Position position, boolean isWhite, JButton button, JButton reverseButton, Board board) {
             frame = new JFrame("Pawn Promotion");
             frame.setAlwaysOnTop(true);
 
@@ -244,6 +244,9 @@ public class Graphics extends JFrame {
                     board.removePiece(position.row, position.column);
                     board.insertPiece(knight, position);
                     setIcon(knight, button);
+                    if (reverseButton != null) {
+                        setIcon(knight, reverseButton);
+                    }
                     frame.dispose();
                 }
             });
@@ -258,6 +261,9 @@ public class Graphics extends JFrame {
                     board.removePiece(position.row, position.column);
                     board.insertPiece(bishop, position);
                     setIcon(bishop, button);
+                    if (reverseButton != null) {
+                        setIcon(bishop, reverseButton);
+                    }
                     frame.dispose();
                 }
             });
@@ -272,6 +278,9 @@ public class Graphics extends JFrame {
                     board.removePiece(position.row, position.column);
                     board.insertPiece(rook, position);
                     setIcon(rook, button);
+                    if (reverseButton != null) {
+                        setIcon(rook, reverseButton);
+                    }
                     frame.dispose();
                 }
             });
@@ -286,6 +295,9 @@ public class Graphics extends JFrame {
                     board.removePiece(position.row, position.column);
                     board.insertPiece(queen, position);
                     setIcon(queen, button);
+                    if (reverseButton != null) {
+                        setIcon(queen, reverseButton);
+                    }
                     frame.dispose();
                 }
             });

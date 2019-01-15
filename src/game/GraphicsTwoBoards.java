@@ -103,6 +103,10 @@ public class GraphicsTwoBoards extends JFrame {
                                         Graphics.setIcon(pieceBelow, chessBoardSquaresWhite[buttonPosition.row - 1][buttonPosition.column]);
                                         Graphics.setIcon(pieceBelow, chessBoardSquaresBlack[reverseButtonPosition.row + 1][reverseButtonPosition.column]);
                                     }
+                                    // Handle pawn promotion to queen.
+                                    if (buttonPosition.row == 0) {
+                                        new Graphics.PromoteMenu(buttonPosition, pressedPiece.isWhite(), whiteButton, chessBoardSquaresBlack[reversedRow][reversedColumn], board);
+                                    }
                                 }
 
                                 // Update icon of rook after castling.
@@ -208,6 +212,11 @@ public class GraphicsTwoBoards extends JFrame {
                                         Piece pieceBelow = board.getPiece(reverseButtonPosition.row - 1, reverseButtonPosition.column);
                                         Graphics.setIcon(pieceBelow, chessBoardSquaresWhite[reverseButtonPosition.row - 1][reverseButtonPosition.column]);
                                         Graphics.setIcon(pieceBelow, chessBoardSquaresBlack[buttonPosition.row + 1][buttonPosition.column]);
+                                    }
+
+                                    // Handle pawn promotion to queen.
+                                    if (reverseButtonPosition.row == 7) {
+                                        new Graphics.PromoteMenu(reverseButtonPosition, pressedPiece.isWhite(), blackButton, chessBoardSquaresWhite[reversedRow][reversedColumn], board);
                                     }
                                 }
 
