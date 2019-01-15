@@ -26,19 +26,19 @@ public class Graphics extends JFrame {
     private List<Position> potentialMoves;
     private Piece pressedPiece;
     private boolean whiteTurn;
-    private final ImageIcon whitePawn = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_pawn.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon blackPawn = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_pawn.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon whiteKnight = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_knight.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon blackKnight = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_knight.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon whiteBishop = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_bishop.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon blackBishop = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_bishop.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon whiteRook = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_rook.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon blackRook = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_rook.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon whiteKing = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_king.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon blackKing = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_king.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon whiteQueen = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_queen.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon blackQueen = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_queen.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
-    private final ImageIcon emptySquare = new ImageIcon(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
+    public static final ImageIcon whitePawn = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_pawn.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon blackPawn = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_pawn.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon whiteKnight = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_knight.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon blackKnight = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_knight.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon whiteBishop = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_bishop.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon blackBishop = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_bishop.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon whiteRook = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_rook.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon blackRook = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_rook.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon whiteKing = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_king.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon blackKing = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_king.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon whiteQueen = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/white_queen.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon blackQueen = new ImageIcon(new ImageIcon("/Users/alex/Desktop/chess/src/img/black_queen.png").getImage().getScaledInstance(75, 75, Image.SCALE_SMOOTH));
+    public static final ImageIcon emptySquare = new ImageIcon(new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB));
 
     public Graphics(String name, Board board) {
         super(name);
@@ -63,7 +63,7 @@ public class Graphics extends JFrame {
                 JButton button = new JButton();
                 button.setMargin(buttonMargin);
                 Piece piece = board.getPiece(row, column);
-                setIcon(piece, button);
+                Graphics.setIcon(piece, button);
                 Position buttonPosition = new Position(row, column);
                 button.addActionListener(new ActionListener() {
                     @Override
@@ -89,13 +89,18 @@ public class Graphics extends JFrame {
                                 setIcon(pressedPiece, button);
                                 board.move(pressedPiece, buttonPosition);
 
-                                // Update icon above/below pawn to account for en passant. Also account for pawn promotion.
                                 if (pressedPiece.isPawn()) {
-                                    setIcon(board.getPiece(buttonPosition.row, buttonPosition.column), chessBoardSquares[buttonPosition.row][buttonPosition.column]);
+                                    // Update icon above/below pawn to account for en passant.
+                                    setIcon(board.getPiece(buttonPosition.row, buttonPosition.column), button);
                                     if (pressedPiece.isWhite()) {
                                         setIcon(board.getPiece(buttonPosition.row + 1, buttonPosition.column), chessBoardSquares[buttonPosition.row + 1][buttonPosition.column]);
                                     } else {
                                         setIcon(board.getPiece(buttonPosition.row - 1, buttonPosition.column), chessBoardSquares[buttonPosition.row - 1][buttonPosition.column]);
+                                    }
+
+                                    // Handle pawn promotion to queen (currently auto-promote).
+                                    if (buttonPosition.row == 0 || buttonPosition.row == 7) {
+                                        new PromoteMenu(buttonPosition, pressedPiece.isWhite(), button);
                                     }
                                 }
 
@@ -170,7 +175,7 @@ public class Graphics extends JFrame {
         graphics.setVisible(true);
     }
 
-    public void setIcon(Piece piece, JButton button) {
+    public static void setIcon(Piece piece, JButton button) {
         ImageIcon icon;
         if (piece == null) {
             icon = emptySquare;
@@ -215,6 +220,93 @@ public class Graphics extends JFrame {
         }
 
         button.setIcon(icon);
+    }
+
+
+
+    private class PromoteMenu implements ActionListener {
+        JFrame frame;
+        JPanel popup;
+        JButton knightButton, bishopButton, rookButton, queenButton;
+
+        PromoteMenu(Position position, boolean isWhite, JButton button) {
+            frame = new JFrame("Pawn Promotion");
+            frame.setAlwaysOnTop(true);
+
+            popup = new JPanel();
+
+            // Promote to knight.
+            knightButton = new JButton();
+            Knight knight = new Knight(position, isWhite, board);
+            Graphics.setIcon(knight, knightButton);
+            knightButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    board.removePiece(position.row, position.column);
+                    board.insertPiece(knight, position);
+                    setIcon(knight, button);
+                    frame.dispose();
+                }
+            });
+            popup.add(knightButton);
+
+            // Promote to bishop.
+            bishopButton = new JButton();
+            Bishop bishop = new Bishop(position, isWhite, board);
+            Graphics.setIcon(bishop, bishopButton);
+            bishopButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    board.removePiece(position.row, position.column);
+                    board.insertPiece(bishop, position);
+                    setIcon(bishop, button);
+                    frame.dispose();
+                }
+            });
+            popup.add(bishopButton);
+
+            // Promote to rook.
+            rookButton = new JButton();
+            Rook rook = new Rook(position, isWhite, board);
+            Graphics.setIcon(rook, rookButton);
+            rookButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    board.removePiece(position.row, position.column);
+                    board.insertPiece(rook, position);
+                    setIcon(rook, button);
+                    frame.dispose();
+                }
+            });
+            popup.add(rookButton);
+
+            // Promote to rook.
+            queenButton = new JButton();
+            Queen queen = new Queen(position, isWhite, board);
+            Graphics.setIcon(queen, queenButton);
+            queenButton.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    board.removePiece(position.row, position.column);
+                    board.insertPiece(queen, position);
+                    setIcon(queen, button);
+                    frame.dispose();
+                }
+            });
+            popup.add(queenButton);
+
+            frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            frame.setUndecorated(true);
+            frame.setSize(415, 100);
+            frame.add(popup);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }
+
+        // BELOW DOESN'T WORK?
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource() == knightButton || e.getSource() == bishopButton ||
+                e.getSource() == rookButton || e.getSource() == queenButton) {
+                frame.dispose();
+            }
+        }
+
     }
 
 }
