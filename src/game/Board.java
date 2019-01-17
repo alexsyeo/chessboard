@@ -1,12 +1,8 @@
 package game;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 import game.pieces.*;
-
-import javax.swing.*;
 
 public class Board {
     private static final int BOARD_LENGTH = 8;
@@ -117,14 +113,6 @@ public class Board {
 
         // The target square should now be occupied by the piece.
         chessBoard[target.row][target.column] = piece;
-
-//        // Handle pawn promotion to queen (currently auto-promote).
-//        if (piece.isPawn() && (target.row == 0 || target.row == 7)) {
-//            promoteMenu(target, piece.isWhite());
-//        } else {
-//            // The target square should now be occupied by the piece.
-//            chessBoard[target.row][target.column] = piece;
-//        }
 
         // Handle castling.
         if (piece.isKing()) {

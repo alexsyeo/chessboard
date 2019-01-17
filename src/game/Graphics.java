@@ -224,7 +224,7 @@ public class Graphics extends JFrame {
 
 
 
-    public static class PromoteMenu implements ActionListener {
+    public static class PromoteMenu {
         JFrame frame;
         JPanel popup;
         JButton knightButton, bishopButton, rookButton, queenButton;
@@ -310,15 +310,6 @@ public class Graphics extends JFrame {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         }
-
-        // BELOW DOESN'T WORK?
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource() == knightButton || e.getSource() == bishopButton ||
-                e.getSource() == rookButton || e.getSource() == queenButton) {
-                frame.dispose();
-            }
-        }
-
     }
 
 }
