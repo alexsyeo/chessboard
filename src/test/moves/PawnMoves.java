@@ -18,7 +18,6 @@ public class PawnMoves {
         board.insertPiece(new King(new Position(0, 0), true, board));
         board.insertPiece(new King(new Position(7, 7), board));
         board.insertPiece(new Pawn(new Position(6, 4), true, board));
-        assertEquals(1, board.getWhitePawnCount());
         assertEquals(2, board.getPiece(6, 4).legalMoves().size());
 
         System.out.println("Pawn Position: " + board.getPiece(6, 4).getPosition());
@@ -36,7 +35,6 @@ public class PawnMoves {
         board.insertPiece(new King(new Position(0, 0), true, board));
         board.insertPiece(new King(new Position(7, 7), board));
         board.insertPiece(new Pawn(new Position(1, 4), board));
-        assertEquals(1, board.getBlackPawnCount());
         assertEquals(2, board.getPiece(1, 4).legalMoves().size());
 
         System.out.println("Pawn Position: " + board.getPiece(1, 4).getPosition());
@@ -56,8 +54,6 @@ public class PawnMoves {
         board.insertPiece(new Pawn(new Position(4, 4), true, board));
         board.getPiece(4, 4).updateHasMoved(true);
         board.insertPiece(new Rook(new Position(3, 3), board));
-        assertEquals(1, board.getWhitePawnCount());
-        assertEquals(1, board.getBlackRookCount());
         assertEquals(2, board.getPiece(4, 4).legalMoves().size());
 
         System.out.println("Pawn Position: " + board.getPiece(4, 4).getPosition());
@@ -77,8 +73,6 @@ public class PawnMoves {
         board.insertPiece(new Pawn(new Position(4, 4), true, board));
         board.getPiece(4, 4).updateHasMoved(true);
         board.insertPiece(new Rook(new Position(3, 5), board));
-        assertEquals(1, board.getWhitePawnCount());
-        assertEquals(1, board.getBlackRookCount());
         assertEquals(2, board.getPiece(4, 4).legalMoves().size());
 
         System.out.println("Pawn Position: " + board.getPiece(4, 4).getPosition());

@@ -1,13 +1,24 @@
 package game;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import game.pieces.*;
 
 public class Board {
     private static final int BOARD_LENGTH = 8;
     private Piece[][] chessBoard;
-    private int blackPawnCount, blackRookCount, blackKnightCount, blackBishopCount, blackQueenCount, whitePawnCount, whiteRookCount, whiteKnightCount, whiteBishopCount, whiteQueenCount;
+    private static final List<Pawn> blackPawns = new ArrayList<>();
+    private static final List<Pawn> whitePawns = new ArrayList<>();
+    private static final List<Knight> blackKnights = new ArrayList<>();
+    private static final List<Knight> whiteKnights = new ArrayList<>();
+    private static final List<Bishop> blackBishops = new ArrayList<>();
+    private static final List<Bishop> whiteBishops = new ArrayList<>();
+    private static final List<Rook> blackRooks = new ArrayList<>();
+    private static final List<Rook> whiteRooks = new ArrayList<>();
+    private static final List<Queen> blackQueens = new ArrayList<>();
+    private static final List<Queen> whiteQueens = new ArrayList<>();
     private King whiteKing, blackKing;
     private LinkedList<Move> moves;
 
@@ -22,10 +33,6 @@ public class Board {
         if (!fill) {
             return;
         }
-
-        blackPawnCount = whitePawnCount = 8;
-        blackRookCount = blackKnightCount = blackBishopCount = whiteRookCount = whiteKnightCount = whiteBishopCount = 2;
-        blackQueenCount = whiteQueenCount = 1;
 
         /*
             POPULATE THE CHESS BOARD WITH THE PIECES IN THEIR INITIAL POSITIONS.
@@ -206,38 +213,7 @@ public class Board {
             return;
         }
 
-        if (piece.isPawn()) {
-            if (piece.isWhite()) {
-                gainWhitePawn();
-            } else {
-                gainBlackPawn();
-            }
-        } else if (piece.isKnight()) {
-            if (piece.isWhite()) {
-                gainWhiteKnight();
-            } else {
-                gainBlackKnight();
-            }
-        } else if (piece.isBishop()) {
-            if (piece.isWhite()) {
-                gainWhiteBishop();
-            } else {
-                gainBlackBishop();
-            }
-        } else if (piece.isRook()) {
-            if (piece.isWhite()) {
-                gainWhiteRook();
-            } else {
-                gainBlackRook();
-            }
-        } else if (piece.isQueen()) {
-            if (piece.isWhite()) {
-                gainWhiteQueen();
-            } else {
-                gainBlackQueen();
-            }
-        } else {
-            // The piece must be a king. We must ensure that there is only one king of each color.
+        if (piece.isKing()) {
             if (piece.isWhite()) {
                 if (whiteKing == null) {
                     whiteKing = (King) piece;
@@ -247,6 +223,8 @@ public class Board {
                     blackKing = (King) piece;
                 }
             }
+        }  else {
+            gainPiece(piece);
         }
 
         chessBoard[row][column] = piece;
@@ -263,167 +241,86 @@ public class Board {
 
         Piece piece = getPiece(row, column);
 
-        if (piece.isPawn()) {
-            if (piece.isWhite()) {
-                loseWhitePawn();
-            } else {
-                loseBlackPawn();
-            }
-        } else if (piece.isKnight()) {
-            if (piece.isWhite()) {
-                loseWhiteKnight();
-            } else {
-                loseBlackKnight();
-            }
-        } else if (piece.isBishop()) {
-            if (piece.isWhite()) {
-                loseWhiteBishop();
-            } else {
-                loseBlackBishop();
-            }
-        } else if (piece.isRook()) {
-            if (piece.isWhite()) {
-                loseWhiteRook();
-            } else {
-                loseBlackRook();
-            }
-        } else if (piece.isQueen()) {
-            if (piece.isWhite()) {
-                loseWhiteQueen();
-            } else {
-                loseBlackQueen();
-            }
-        } else {
-            // The piece must be a king. We must ensure that there is only one king of each color.
+        if (piece.isKing()) {
             if (piece.isWhite()) {
                 whiteKing = null;
             } else {
                 blackKing = null;
             }
+        } else {
+            losePiece(piece);
         }
 
         chessBoard[row][column] = null;
         return piece;
     }
 
-    public int getBlackPawnCount() {
-        return blackPawnCount;
+    private void gainPiece(Piece piece) {
+        if (piece.isPawn()) {
+            if (piece.isWhite()) {
+                whitePawns.add((Pawn)piece);
+            } else {
+                blackPawns.add((Pawn)piece);
+            }
+        } else if (piece.isKnight()) {
+            if (piece.isWhite()) {
+                whiteKnights.add((Knight)piece);
+            } else {
+                blackKnights.add((Knight)piece);
+            }
+        } else if (piece.isBishop()) {
+            if (piece.isWhite()) {
+                whiteBishops.add((Bishop)piece);
+            } else {
+                blackBishops.add((Bishop)piece);
+            }
+        } else if (piece.isRook()) {
+            if (piece.isWhite()) {
+                whiteRooks.add((Rook)piece);
+            } else {
+                blackRooks.add((Rook)piece);
+            }
+        } else if (piece.isQueen()) {
+            if (piece.isWhite()) {
+                whiteQueens.add((Queen)piece);
+            } else {
+                blackQueens.add((Queen)piece);
+            }
+        }
     }
 
-    public int getWhitePawnCount() {
-        return whitePawnCount;
-    }
-
-    public void loseBlackPawn() {
-        blackPawnCount--;
-    }
-
-    public void loseWhitePawn() {
-        whitePawnCount--;
-    }
-
-    public void gainBlackPawn() {
-        blackPawnCount++;
-    }
-
-    public void gainWhitePawn() {
-        whitePawnCount++;
-    }
-
-    public int getBlackRookCount() {
-        return blackRookCount;
-    }
-
-    public int getWhiteRookCount() {
-        return whiteRookCount;
-    }
-
-    public void loseBlackRook() {
-        blackRookCount--;
-    }
-
-    public void loseWhiteRook() {
-        whiteRookCount--;
-    }
-
-    public void gainBlackRook() {
-        blackRookCount++;
-    }
-
-    public void gainWhiteRook() {
-        whiteRookCount++;
-    }
-
-    public int getBlackKnightCount() {
-        return blackKnightCount;
-    }
-
-    public int getWhiteKnightCount() {
-        return whiteKnightCount;
-    }
-
-    public void loseBlackKnight() {
-        blackKnightCount--;
-    }
-
-    public void loseWhiteKnight() {
-        whiteKnightCount--;
-    }
-
-    public void gainBlackKnight() {
-        blackKnightCount++;
-    }
-
-    public void gainWhiteKnight() {
-        whiteKnightCount++;
-    }
-
-    public int getBlackBishopCount() {
-        return blackBishopCount;
-    }
-
-    public int getWhiteBishopCount() {
-        return whiteBishopCount;
-    }
-
-    public void loseBlackBishop() {
-        blackBishopCount--;
-    }
-
-    public void loseWhiteBishop() {
-        whiteBishopCount--;
-    }
-
-    public void gainBlackBishop() {
-        blackBishopCount++;
-    }
-
-    public void gainWhiteBishop() {
-        whiteBishopCount++;
-    }
-
-    public int getBlackQueenCount() {
-        return blackQueenCount;
-    }
-
-    public int getWhiteQueenCount() {
-        return whiteQueenCount;
-    }
-
-    public void loseBlackQueen() {
-        blackQueenCount--;
-    }
-
-    public void loseWhiteQueen() {
-        whiteQueenCount--;
-    }
-
-    public void gainBlackQueen() {
-        blackQueenCount++;
-    }
-
-    public void gainWhiteQueen() {
-        whiteQueenCount++;
+    private void losePiece(Piece piece) {
+        if (piece.isPawn()) {
+            if (piece.isWhite()) {
+                whitePawns.remove(piece);
+            } else {
+                blackPawns.remove(piece);
+            }
+        } else if (piece.isKnight()) {
+            if (piece.isWhite()) {
+                whiteKnights.remove(piece);
+            } else {
+                blackKnights.remove(piece);
+            }
+        } else if (piece.isBishop()) {
+            if (piece.isWhite()) {
+                whiteBishops.remove(piece);
+            } else {
+                blackBishops.remove(piece);
+            }
+        } else if (piece.isRook()) {
+            if (piece.isWhite()) {
+                whiteRooks.remove(piece);
+            } else {
+                blackRooks.remove(piece);
+            }
+        } else if (piece.isQueen()) {
+            if (piece.isWhite()) {
+                whiteQueens.remove(piece);
+            } else {
+                blackQueens.remove(piece);
+            }
+        }
     }
 
     public Position getBlackKingPosition() {
@@ -442,6 +339,9 @@ public class Board {
         }
     }
 
+    /*
+        RETURNS WHETHER OR NOT THE BLACK KING IS IN CHECK.
+    */
     public boolean blackKingInCheck() {
         // Check for white king.
         if (kingsTouching()) {
@@ -667,6 +567,10 @@ public class Board {
         return false;
     }
 
+
+    /*
+        RETURNS WHETHER OR NOT THE WHITE KING IS IN CHECK.
+    */
      public boolean whiteKingInCheck() {
          // Check for black king.
          if (kingsTouching()) {
@@ -892,6 +796,94 @@ public class Board {
          return false;
      }
 
+
+    /*
+        RETURNS WHETHER OR NOT THE WHITE KING IS IN CHECKMATE.
+    */
+    public boolean whiteKingInCheckmate() {
+        if (!whiteKingInCheck()) {
+            return false;
+        }
+        // If any white piece has a valid move, then return false since this is not checkmate.
+        if (whiteKing.legalMoves().size() > 0) {
+            return false;
+        }
+        for (Pawn pawn : whitePawns) {
+            if (pawn.legalMoves().size() > 0) {
+                return false;
+            }
+        }
+        for (Knight knight : whiteKnights) {
+            if (knight.legalMoves().size() > 0) {
+                return false;
+            }
+        }
+        for (Bishop bishop : whiteBishops) {
+            if (bishop.legalMoves().size() > 0) {
+                return false;
+            }
+        }
+        for (Rook rook : whiteRooks) {
+            if (rook.legalMoves().size() > 0) {
+                return false;
+            }
+        }
+        for (Queen queen : whiteQueens) {
+            if (queen.legalMoves().size() > 0) {
+                return false;
+            }
+        }
+
+        // Return true since white has no valid moves.
+        return true;
+    }
+
+    /*
+        RETURNS WHETHER OR NOT THE BLACK KING IS IN CHECKMATE.
+    */
+    public boolean blackKingInCheckmate() {
+        if (!blackKingInCheck()) {
+            return false;
+        }
+        // If any black piece has a valid move, then return false since this is not checkmate.
+        if (blackKing.legalMoves().size() > 0) {
+            return false;
+        }
+        for (Pawn pawn : blackPawns) {
+            if (pawn.legalMoves().size() > 0) {
+                return false;
+            }
+        }
+        for (Knight knight : blackKnights) {
+            if (knight.legalMoves().size() > 0) {
+                return false;
+            }
+        }
+        for (Bishop bishop : blackBishops) {
+            if (bishop.legalMoves().size() > 0) {
+                return false;
+            }
+        }
+        for (Rook rook : blackRooks) {
+            if (rook.legalMoves().size() > 0) {
+                return false;
+            }
+        }
+        for (Queen queen : blackQueens) {
+            if (queen.legalMoves().size() > 0) {
+                return false;
+            }
+        }
+
+        // Return true since black has no valid moves.
+        return true;
+    }
+
+
+    /*
+        RETURNS WHETHER OR NOT THE WHITE AND BLACK KINGS ARE TOUCHING.
+        NOTE: THIS SHOULD NEVER RETURN TRUE FOR ANY LEGAL POSITION IN THE GAME.
+    */
     private boolean kingsTouching() {
         if (blackKing == null || whiteKing == null) {
             return false;

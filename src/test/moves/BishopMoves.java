@@ -17,7 +17,6 @@ public class BishopMoves {
         board.insertPiece(new King(new Position(0, 7), true, board));
         board.insertPiece(new King(new Position(7, 0), board));
         board.insertPiece(new Bishop(new Position(0, 0), true, board));
-        assertEquals(1, board.getWhiteBishopCount());
         assertEquals(7, board.getPiece(0, 0).legalMoves().size());
 
         System.out.println("Bishop Position: " + board.getPiece(0, 0).getPosition());
@@ -36,8 +35,6 @@ public class BishopMoves {
         board.insertPiece(new King(new Position(7, 7), board));
         board.insertPiece(new Bishop(new Position(6, 6), board));
         board.insertPiece(new Bishop(new Position(1, 1), true, board));
-        assertEquals(1, board.getWhiteBishopCount());
-        assertEquals(1, board.getBlackBishopCount());
         assertEquals(5, board.getPiece(1, 1).legalMoves().size());
 
         System.out.println("Bishop Position: " + board.getPiece(1, 1).getPosition());
@@ -56,8 +53,6 @@ public class BishopMoves {
         board.insertPiece(new King(new Position(7, 0), board));
         board.insertPiece(new Bishop(new Position(1, 0), true, board));
         board.insertPiece(new Rook(new Position(6, 0), board));
-        assertEquals(1, board.getWhiteBishopCount());
-        assertEquals(1, board.getBlackRookCount());
         assertEquals(0, board.getPiece(1, 0).legalMoves().size());
 
         System.out.println("Bishop Position: " + board.getPiece(1, 0).getPosition());
@@ -76,7 +71,6 @@ public class BishopMoves {
         board.insertPiece(new King(new Position(7, 0), board));
         board.insertPiece(new Bishop(new Position(1, 0), true, board));
         board.insertPiece(new Bishop(new Position(2, 1), true, board));
-        assertEquals(2, board.getWhiteBishopCount());
         assertEquals(1, board.getPiece(1, 0).legalMoves().size());
 
         System.out.println("Bishop Position: " + board.getPiece(1, 0).getPosition());

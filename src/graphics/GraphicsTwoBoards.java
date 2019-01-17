@@ -1,11 +1,11 @@
-package game;
+package graphics;
 
+import game.Board;
 import game.pieces.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.util.List;
@@ -24,6 +24,10 @@ public class GraphicsTwoBoards extends JFrame {
     private Piece pressedPiece;
     private boolean whiteTurn;
 
+    public GraphicsTwoBoards(Board board) {
+        this("Chess", board);
+    }
+
     public GraphicsTwoBoards(String name, Board board) {
         super(name);
         this.board = board;
@@ -41,11 +45,11 @@ public class GraphicsTwoBoards extends JFrame {
         JPanel blackBoardPanel = new JPanel();
         whiteBoardPanel.setLayout(new GridLayout(8, 8));
         whiteBoardPanel.setPreferredSize(new Dimension(480, 480));
-        whiteBoardPanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10), new LineBorder(Color.BLACK)));
+        whiteBoardPanel.setBorder(new EmptyBorder(0, 0, 0, 15));
         masterPanel.add(whiteBoardPanel, BorderLayout.WEST);
         blackBoardPanel.setLayout(new GridLayout(8, 8));
         blackBoardPanel.setPreferredSize(new Dimension(480, 480));
-        blackBoardPanel.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(10, 10, 10, 10), new LineBorder(Color.BLACK)));
+        blackBoardPanel.setBorder(new EmptyBorder(0, 15, 0, 0));
         masterPanel.add(blackBoardPanel, BorderLayout.EAST);
         Insets buttonMargin = new Insets(0,0,0,0);
 
@@ -60,7 +64,7 @@ public class GraphicsTwoBoards extends JFrame {
                 blackButton.setMargin(buttonMargin);
 
                 Piece piece = board.getPiece(row, column);
-                Graphics.setIcon(piece, whiteButton);
+                GraphicsTools.setIcon(piece, whiteButton);
                 Position buttonPosition = new Position(row, column);
                 Position reverseButtonPosition = new Position(reversedRow, reversedColumn);
                 whiteButton.addActionListener(new ActionListener() {
@@ -83,46 +87,46 @@ public class GraphicsTwoBoards extends JFrame {
                             }
                             if (potentialMoves.contains(buttonPosition)) {
                                 Position piecePosition = pressedPiece.getPosition();
-                                Graphics.setIcon(null, chessBoardSquaresWhite[piecePosition.row][piecePosition.column]);
-                                Graphics.setIcon(null, chessBoardSquaresBlack[7 - piecePosition.row][7 - piecePosition.column]);
-                                Graphics.setIcon(pressedPiece, whiteButton);
-                                Graphics.setIcon(pressedPiece, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column]);
+                                GraphicsTools.setIcon(null, chessBoardSquaresWhite[piecePosition.row][piecePosition.column]);
+                                GraphicsTools.setIcon(null, chessBoardSquaresBlack[7 - piecePosition.row][7 - piecePosition.column]);
+                                GraphicsTools.setIcon(pressedPiece, whiteButton);
+                                GraphicsTools.setIcon(pressedPiece, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column]);
                                 board.move(pressedPiece, buttonPosition);
 
                                 // Update icon above/below pawn to account for en passant. Also account for pawn promotion.
                                 if (pressedPiece.isPawn()) {
                                     Piece pawn = board.getPiece(buttonPosition.row, buttonPosition.column);
-                                    Graphics.setIcon(pawn, chessBoardSquaresWhite[buttonPosition.row][buttonPosition.column]);
-                                    Graphics.setIcon(pawn, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column]);
+                                    GraphicsTools.setIcon(pawn, chessBoardSquaresWhite[buttonPosition.row][buttonPosition.column]);
+                                    GraphicsTools.setIcon(pawn, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column]);
                                     if (pawn.isWhite()) {
                                         Piece pieceBelow = board.getPiece(buttonPosition.row + 1, buttonPosition.column);
-                                        Graphics.setIcon(pieceBelow, chessBoardSquaresWhite[buttonPosition.row + 1][buttonPosition.column]);
-                                        Graphics.setIcon(pieceBelow, chessBoardSquaresBlack[reverseButtonPosition.row - 1][reverseButtonPosition.column]);
+                                        GraphicsTools.setIcon(pieceBelow, chessBoardSquaresWhite[buttonPosition.row + 1][buttonPosition.column]);
+                                        GraphicsTools.setIcon(pieceBelow, chessBoardSquaresBlack[reverseButtonPosition.row - 1][reverseButtonPosition.column]);
                                     } else {
                                         Piece pieceBelow = board.getPiece(buttonPosition.row - 1, buttonPosition.column);
-                                        Graphics.setIcon(pieceBelow, chessBoardSquaresWhite[buttonPosition.row - 1][buttonPosition.column]);
-                                        Graphics.setIcon(pieceBelow, chessBoardSquaresBlack[reverseButtonPosition.row + 1][reverseButtonPosition.column]);
+                                        GraphicsTools.setIcon(pieceBelow, chessBoardSquaresWhite[buttonPosition.row - 1][buttonPosition.column]);
+                                        GraphicsTools.setIcon(pieceBelow, chessBoardSquaresBlack[reverseButtonPosition.row + 1][reverseButtonPosition.column]);
                                     }
                                     // Handle pawn promotion to queen.
                                     if (buttonPosition.row == 0) {
-                                        new Graphics.PromoteMenu(buttonPosition, pressedPiece.isWhite(), whiteButton, chessBoardSquaresBlack[reversedRow][reversedColumn], board);
+                                        new PromoteMenu(buttonPosition, pressedPiece.isWhite(), whiteButton, chessBoardSquaresBlack[reversedRow][reversedColumn], board);
                                     }
                                 }
 
                                 // Update icon of rook after castling.
                                 if (pressedPiece.isKing()) {
                                     if (buttonPosition.column == piecePosition.column + 2) {
-                                        Graphics.setIcon(null, chessBoardSquaresWhite[buttonPosition.row][buttonPosition.column + 1]);
-                                        Graphics.setIcon(null, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column - 1]);
+                                        GraphicsTools.setIcon(null, chessBoardSquaresWhite[buttonPosition.row][buttonPosition.column + 1]);
+                                        GraphicsTools.setIcon(null, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column - 1]);
                                         Piece rook = board.getPiece(buttonPosition.row, buttonPosition.column - 1);
-                                        Graphics.setIcon(rook, chessBoardSquaresWhite[buttonPosition.row][buttonPosition.column - 1]);
-                                        Graphics.setIcon(rook, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column + 1]);
+                                        GraphicsTools.setIcon(rook, chessBoardSquaresWhite[buttonPosition.row][buttonPosition.column - 1]);
+                                        GraphicsTools.setIcon(rook, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column + 1]);
                                     } else if (buttonPosition.column == piecePosition.column - 2) {
-                                        Graphics.setIcon(null, chessBoardSquaresWhite[buttonPosition.row][buttonPosition.column - 2]);
-                                        Graphics.setIcon(null, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column + 2]);
+                                        GraphicsTools.setIcon(null, chessBoardSquaresWhite[buttonPosition.row][buttonPosition.column - 2]);
+                                        GraphicsTools.setIcon(null, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column + 2]);
                                         Piece rook = board.getPiece(buttonPosition.row, buttonPosition.column + 1);
-                                        Graphics.setIcon(rook, chessBoardSquaresWhite[buttonPosition.row][buttonPosition.column + 1]);
-                                        Graphics.setIcon(rook, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column - 1]);
+                                        GraphicsTools.setIcon(rook, chessBoardSquaresWhite[buttonPosition.row][buttonPosition.column + 1]);
+                                        GraphicsTools.setIcon(rook, chessBoardSquaresBlack[reverseButtonPosition.row][reverseButtonPosition.column - 1]);
                                     }
                                 }
 
@@ -172,7 +176,7 @@ public class GraphicsTwoBoards extends JFrame {
 
                 // Now we must do the same for the black button.
                 piece = board.getPiece(reversedRow, reversedColumn);
-                Graphics.setIcon(piece, blackButton);
+                GraphicsTools.setIcon(piece, blackButton);
                 blackButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -193,30 +197,30 @@ public class GraphicsTwoBoards extends JFrame {
                             }
                             if (potentialMoves.contains(reverseButtonPosition)) {
                                 Position piecePosition = pressedPiece.getPosition();
-                                Graphics.setIcon(null, chessBoardSquaresWhite[piecePosition.row][piecePosition.column]);
-                                Graphics.setIcon(null, chessBoardSquaresBlack[7 - piecePosition.row][7 - piecePosition.column]);
-                                Graphics.setIcon(pressedPiece, blackButton);
-                                Graphics.setIcon(pressedPiece, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column]);
+                                GraphicsTools.setIcon(null, chessBoardSquaresWhite[piecePosition.row][piecePosition.column]);
+                                GraphicsTools.setIcon(null, chessBoardSquaresBlack[7 - piecePosition.row][7 - piecePosition.column]);
+                                GraphicsTools.setIcon(pressedPiece, blackButton);
+                                GraphicsTools.setIcon(pressedPiece, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column]);
                                 board.move(pressedPiece, reverseButtonPosition);
 
                                 // Update icon above/below pawn to account for en passant. Also account for pawn promotion.
                                 if (pressedPiece.isPawn()) {
                                     Piece pawn = board.getPiece(reverseButtonPosition.row, reverseButtonPosition.column);
-                                    Graphics.setIcon(pawn, chessBoardSquaresBlack[buttonPosition.row][buttonPosition.column]);
-                                    Graphics.setIcon(pawn, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column]);
+                                    GraphicsTools.setIcon(pawn, chessBoardSquaresBlack[buttonPosition.row][buttonPosition.column]);
+                                    GraphicsTools.setIcon(pawn, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column]);
                                     if (pawn.isWhite()) {
                                         Piece pieceBelow = board.getPiece(reverseButtonPosition.row + 1, reverseButtonPosition.column);
-                                        Graphics.setIcon(pieceBelow, chessBoardSquaresWhite[reverseButtonPosition.row + 1][reverseButtonPosition.column]);
-                                        Graphics.setIcon(pieceBelow, chessBoardSquaresBlack[buttonPosition.row - 1][buttonPosition.column]);
+                                        GraphicsTools.setIcon(pieceBelow, chessBoardSquaresWhite[reverseButtonPosition.row + 1][reverseButtonPosition.column]);
+                                        GraphicsTools.setIcon(pieceBelow, chessBoardSquaresBlack[buttonPosition.row - 1][buttonPosition.column]);
                                     } else {
                                         Piece pieceBelow = board.getPiece(reverseButtonPosition.row - 1, reverseButtonPosition.column);
-                                        Graphics.setIcon(pieceBelow, chessBoardSquaresWhite[reverseButtonPosition.row - 1][reverseButtonPosition.column]);
-                                        Graphics.setIcon(pieceBelow, chessBoardSquaresBlack[buttonPosition.row + 1][buttonPosition.column]);
+                                        GraphicsTools.setIcon(pieceBelow, chessBoardSquaresWhite[reverseButtonPosition.row - 1][reverseButtonPosition.column]);
+                                        GraphicsTools.setIcon(pieceBelow, chessBoardSquaresBlack[buttonPosition.row + 1][buttonPosition.column]);
                                     }
 
                                     // Handle pawn promotion to queen.
                                     if (reverseButtonPosition.row == 7) {
-                                        new Graphics.PromoteMenu(reverseButtonPosition, pressedPiece.isWhite(), blackButton, chessBoardSquaresWhite[reversedRow][reversedColumn], board);
+                                        new PromoteMenu(reverseButtonPosition, pressedPiece.isWhite(), blackButton, chessBoardSquaresWhite[reversedRow][reversedColumn], board);
                                     }
                                 }
 
@@ -224,17 +228,17 @@ public class GraphicsTwoBoards extends JFrame {
                                 // Update icon of rook after castling.
                                 if (pressedPiece.isKing()) {
                                     if (reverseButtonPosition.column == piecePosition.column + 2) {
-                                        Graphics.setIcon(null, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column + 1]);
-                                        Graphics.setIcon(null, chessBoardSquaresBlack[buttonPosition.row][buttonPosition.column - 1]);
+                                        GraphicsTools.setIcon(null, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column + 1]);
+                                        GraphicsTools.setIcon(null, chessBoardSquaresBlack[buttonPosition.row][buttonPosition.column - 1]);
                                         Piece rook = board.getPiece(reverseButtonPosition.row, reverseButtonPosition.column - 1);
-                                        Graphics.setIcon(rook, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column - 1]);
-                                        Graphics.setIcon(rook, chessBoardSquaresBlack[buttonPosition.row][buttonPosition.column + 1]);
+                                        GraphicsTools.setIcon(rook, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column - 1]);
+                                        GraphicsTools.setIcon(rook, chessBoardSquaresBlack[buttonPosition.row][buttonPosition.column + 1]);
                                     } else if (reverseButtonPosition.column == piecePosition.column - 2) {
-                                        Graphics.setIcon(null, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column - 2]);
-                                        Graphics.setIcon(null, chessBoardSquaresBlack[buttonPosition.row][buttonPosition.column + 2]);
+                                        GraphicsTools.setIcon(null, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column - 2]);
+                                        GraphicsTools.setIcon(null, chessBoardSquaresBlack[buttonPosition.row][buttonPosition.column + 2]);
                                         Piece rook = board.getPiece(reverseButtonPosition.row, reverseButtonPosition.column + 1);
-                                        Graphics.setIcon(rook, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column + 1]);
-                                        Graphics.setIcon(rook, chessBoardSquaresBlack[buttonPosition.row][buttonPosition.column - 1]);
+                                        GraphicsTools.setIcon(rook, chessBoardSquaresWhite[reverseButtonPosition.row][reverseButtonPosition.column + 1]);
+                                        GraphicsTools.setIcon(rook, chessBoardSquaresBlack[buttonPosition.row][buttonPosition.column - 1]);
                                     }
                                 }
 
@@ -289,9 +293,7 @@ public class GraphicsTwoBoards extends JFrame {
     public static void createAndShowGUI(Board board) {
         GraphicsTwoBoards graphics = new GraphicsTwoBoards("Chess", board);
         graphics.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         graphics.addComponentsToPane(graphics.getContentPane());
-
         graphics.pack();
         graphics.setLocationRelativeTo(null);
         graphics.setVisible(true);

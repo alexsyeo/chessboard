@@ -17,7 +17,6 @@ public class QueenMoves {
         board.insertPiece(new King(new Position(1, 2), true, board));
         board.insertPiece(new King(new Position(7, 6), board));
         board.insertPiece(new Queen(new Position(0, 0), true, board));
-        assertEquals(1, board.getWhiteQueenCount());
         assertEquals(21, board.getPiece(0, 0).legalMoves().size());
 
         System.out.println("Queen Position: " + board.getPiece(0, 0).getPosition());
@@ -36,8 +35,6 @@ public class QueenMoves {
         board.insertPiece(new King(new Position(7, 7), board));
         board.insertPiece(new Queen(new Position(1, 1), true, board));
         board.insertPiece(new Bishop(new Position(6, 6), board));
-        assertEquals(1, board.getWhiteQueenCount());
-        assertEquals(1, board.getBlackBishopCount());
         assertEquals(5, board.getPiece(1, 1).legalMoves().size());
 
         System.out.println("Queen Position: " + board.getPiece(1, 1).getPosition());
@@ -56,8 +53,6 @@ public class QueenMoves {
         board.insertPiece(new King(new Position(7, 0), board));
         board.insertPiece(new Queen(new Position(1, 0), true, board));
         board.insertPiece(new Rook(new Position(6, 0), board));
-        assertEquals(1, board.getWhiteQueenCount());
-        assertEquals(1, board.getBlackRookCount());
         assertEquals(5, board.getPiece(1, 0).legalMoves().size());
 
         System.out.println("Queen Position: " + board.getPiece(1, 0).getPosition());
@@ -76,8 +71,6 @@ public class QueenMoves {
         board.insertPiece(new King(new Position(7, 0), board));
         board.insertPiece(new Queen(new Position(1, 0), true, board));
         board.insertPiece(new Bishop(new Position(2, 0), true, board));
-        assertEquals(1, board.getWhiteQueenCount());
-        assertEquals(1, board.getWhiteBishopCount());
         assertEquals(14, board.getPiece(1, 0).legalMoves().size());
 
         System.out.println("Queen Position: " + board.getPiece(1, 0).getPosition());
